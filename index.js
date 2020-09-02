@@ -31,6 +31,8 @@ exports.sendImageApi = functions.https.onRequest((req, res) => {
     await gcs.uploadToGCS(diary_img, file_path)
           .then( () => {
 
+            console.log("pass");
+
             agent.add(new Image({
               imageUrl: gcs.getPublicUrl(file_path),
             })
