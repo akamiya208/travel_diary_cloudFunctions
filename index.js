@@ -12,7 +12,7 @@ const gcs = require('./gcs');
 exports.sendImageApi = (req, res) => {
   (async () => {
 
-    let text = request.body.result.parameters.text;
+    let text = req.body.result.parameters.text  || '';
 
     let img_paths = await select_image(text); // TODO: select_imageの引数は変更要
     let append_content_img_lists = await image_processing.load_img(img_paths);
@@ -25,25 +25,25 @@ exports.sendImageApi = (req, res) => {
     await gcs.uploadToGCS(diary_img, file_path)
           .then( () => {
 
-            // res.status(200).json({
-            //   "line": {
-            //     "type": "image",
-            //     "originalContentUrl": gcs.getPublicUrl(file_path),
-            //     "previewImageUrl": gcs.getPublicUrl(file_path),
-            //     "animated": false
-            //   }
-            // });
+            res.status(200).json({
+              "line": {
+                "type": "image",
+                "originalContentUrl": gcs.getPublicUrl(file_path),
+                "previewImageUrl": gcs.getPublicUrl(file_path),
+                "animated": false
+              }
+            });
 
-            res.send(
-              JSON.stringify({
-                "line": {
-                  "type": "image",
-                  "originalContentUrl": gcs.getPublicUrl(file_path),
-                  "previewImageUrl": gcs.getPublicUrl(file_path),
-                  "animated": false
-                }
-              })
-            );
+            // res.send(
+            //   JSON.stringify({
+            //     "line": {
+            //       "type": "image",
+            //       "originalContentUrl": gcs.getPublicUrl(file_path),
+            //       "previewImageUrl": gcs.getPublicUrl(file_path),
+            //       "animated": false
+            //     }
+            //   })
+            // );
 
           })
           .catch( (err) => {
