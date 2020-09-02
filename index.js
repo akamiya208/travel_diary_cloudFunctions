@@ -15,7 +15,7 @@ const {Image} = require('dialogflow-fulfillment');
 
 exports.sendImageApi = functions.https.onRequest((req, res) => {
 
-  (async () => {
+  // (async () => {
 
   const agent = new WebhookClient({ req, res });
 
@@ -72,5 +72,5 @@ exports.sendImageApi = functions.https.onRequest((req, res) => {
   intentMap.set('StartTextIntent.yes.SendImageIntent', SendImage);
   agent.handleRequest(intentMap);
 
-  })().catch();
+  // })().catch();
 });
