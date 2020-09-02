@@ -12,7 +12,10 @@ const gcs = require('./gcs');
 exports.sendImageApi = (req, res) => {
   (async () => {
 
-    let text = req.body.result.parameters.text  || '';
+    console.log(req);
+    let text = "test";
+    // let text = req.body.result.parameters.text  || '';
+    
 
     let img_paths = await select_image(text); // TODO: select_imageの引数は変更要
     let append_content_img_lists = await image_processing.load_img(img_paths);
