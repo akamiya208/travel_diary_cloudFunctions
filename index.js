@@ -14,6 +14,9 @@ const {Image} = require('dialogflow-fulfillment');
 
 
 exports.sendImageApi = functions.https.onRequest((req, res) => {
+
+  (async () => {
+
   const agent = new WebhookClient({ req, res });
 
   function SendImage(agent){
@@ -23,49 +26,51 @@ exports.sendImageApi = functions.https.onRequest((req, res) => {
   );
   };
 
-  async function SendImageTest(agent){
+  // async function SendImageTest(agent){
   
-    let text = req.body["queryResult"]["parameters"]["text"]  || '';
+  //   let text = req.body["queryResult"]["parameters"]["text"]  || '';
 
-    let img_paths = await select_image(text); // TODO: select_imageの引数は変更要
-    let append_content_img_lists = await image_processing.load_img(img_paths);
-    let append_text_img_buf_lists =  await image_processing.make_text_img(text);
-    let diary_img = await image_processing.concat_img(append_content_img_lists, append_text_img_buf_lists);
+  //   let img_paths = await select_image(text); // TODO: select_imageの引数は変更要
+  //   let append_content_img_lists = await image_processing.load_img(img_paths);
+  //   let append_text_img_buf_lists =  await image_processing.make_text_img(text);
+  //   let diary_img = await image_processing.concat_img(append_content_img_lists, append_text_img_buf_lists);
         
-    const filename = Date.now() + ".png"
-    const file_path = process.env['ENV'] +'/diary/' + filename;
+  //   const filename = Date.now() + ".png"
+  //   const file_path = process.env['ENV'] +'/diary/' + filename;
     
-    await gcs.uploadToGCS(diary_img, file_path)
-          .then( () => {
+  //   await gcs.uploadToGCS(diary_img, file_path)
+  //         .then( () => {
 
-            console.log("pass");
+  //           console.log("pass");
 
-            agent.add(new Image({
-              imageUrl: gcs.getPublicUrl(file_path),
-            })
-          );    
+  //           agent.add(new Image({
+  //             imageUrl: gcs.getPublicUrl(file_path),
+  //           })
+  //         );    
 
-            // res.send(
-            //   JSON.stringify({
-            //     "line": {
-            //       "type": "image",
-            //       "originalContentUrl": gcs.getPublicUrl(file_path),
-            //       "previewImageUrl": gcs.getPublicUrl(file_path),
-            //       "animated": false
-            //     }
-            //   })
-            // );
+  //           // res.send(
+  //           //   JSON.stringify({
+  //           //     "line": {
+  //           //       "type": "image",
+  //           //       "originalContentUrl": gcs.getPublicUrl(file_path),
+  //           //       "previewImageUrl": gcs.getPublicUrl(file_path),
+  //           //       "animated": false
+  //           //     }
+  //           //   })
+  //           // );
 
-          })
-          .catch( (err) => {
-            // res.status(500).json({
-            //   "error": err
-            // });
-          })
+  //         })
+  //         .catch( (err) => {
+  //           // res.status(500).json({
+  //           //   "error": err
+  //           // });
+  //         })
   
-  }
+  // }
 
   let intentMap = new Map();
   intentMap.set('StartTextIntent.yes.SendImageIntent', SendImage);
   agent.handleRequest(intentMap);
+
+  })().catch();
 });
