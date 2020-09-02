@@ -16,8 +16,8 @@ const {Image} = require('dialogflow-fulfillment');
 exports.sendImageApi = functions.https.onRequest((req, res) => {
   const agent = new WebhookClient({ req, res });
 
-  async function SendImage(agent){
-    await agent.add(new Image({
+  function SendImage(agent){
+    agent.add(new Image({
       imageUrl: "https://storage.googleapis.com/travel-diary_bucket/development/diary/1599019574933.png",
     })
   );
