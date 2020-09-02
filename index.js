@@ -25,12 +25,7 @@ exports.sendImageApi = (req, res) => {
     await gcs.uploadToGCS(diary_img, file_path)
           .then( () => {
             res.status(200).json({
-              "line": {
-                "type": "image",
-                "originalContentUrl": gcs.getPublicUrl(file_path),
-                "previewImageUrl": gcs.getPublicUrl(file_path),
-                "animated": false
-              }
+              "url": gcs.getPublicUrl(file_path)
             });
           })
           .catch( (err) => {
