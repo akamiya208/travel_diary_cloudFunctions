@@ -12,7 +12,7 @@ const gcs = require('./gcs');
 exports.sendImageApi = (req, res) => {
   (async () => {
 
-    console.log(req.body.result.parameters);
+    console.log(req.body.result);
     let text = "test";
     // let text = req.body.result.parameters.text  || '';
     
