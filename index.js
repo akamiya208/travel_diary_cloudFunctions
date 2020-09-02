@@ -7,15 +7,18 @@
 const select_image = require('./select_image');
 const image_processing = require('./image_processing');
 const gcs = require('./gcs');
+const functions = require('firebase-functions');
+const {WebhookClient} = require('dialogflow-fulfillment');
+const {Image} = require('dialogflow-fulfillment');
 
 
-exports.sendImageApi = (req, res) => {
-  (async () => {
 
-    console.log(req.body.result);
-    let text = "test";
-    // let text = req.body.result.parameters.text  || '';
-    
+exports.sendImageApi = functions.https.onRequest((req, res) => {
+  const agent = new WebhookClient({ req, res });
+
+  async function SendImage(agent){
+  
+    let text = req.body["queryResult"]["parameters"]["text"]  || '';
 
     let img_paths = await select_image(text); // TODO: select_imageの引数は変更要
     let append_content_img_lists = await image_processing.load_img(img_paths);
@@ -28,14 +31,10 @@ exports.sendImageApi = (req, res) => {
     await gcs.uploadToGCS(diary_img, file_path)
           .then( () => {
 
-            res.status(200).json({
-              "line": {
-                "type": "image",
-                "originalContentUrl": gcs.getPublicUrl(file_path),
-                "previewImageUrl": gcs.getPublicUrl(file_path),
-                "animated": false
-              }
-            });
+            agent.add(new Image({
+              imageUrl: gcs.getPublicUrl(file_path),
+            })
+          );    
 
             // res.send(
             //   JSON.stringify({
@@ -54,5 +53,10 @@ exports.sendImageApi = (req, res) => {
             //   "error": err
             // });
           })
-  })().catch();
-};
+  
+  }
+
+  let intentMap = new Map();
+  intentMap.set('StartTextIntent.yes.SendImageIntent', SendImage);
+  agent.handleRequest(intentMap);
+});
