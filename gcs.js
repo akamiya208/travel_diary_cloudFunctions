@@ -26,10 +26,7 @@ async function uploadToGCS(img, file_path){
     })
     .end(await img.toBuffer())
     .on('error', function(err){
-
-    })
-    .on('finish', function(){
-
+        console.log(err);
     });
 }
 

@@ -3,20 +3,40 @@
 const { registerFont, createCanvas} = require('canvas');
 const sharp = require('sharp');
 const gcs = require('./gcs');
+const axios = require('axios');
 
 registerFont('./GenEiChikugoMin2-R.ttf', { family: 'GenEiChikugoMin2 Regular' })
 
 function load_img(img_paths){
     const promises = []
+        
+    background_img_path = img_paths.pop();
 
     img_paths.map(img_path => {
         promises.push(
-            gcs.downloadFromGCS(img_path)
-                .then(function(buf){
-                    return sharp(buf);
-                })
+            axios({
+                method: 'get',
+                url: img_path,
+                responseType: 'arraybuffer'
+              })
+            .then(function (response) {
+                  return sharp(response.data);
+            })
+            .catch(function(err){
+                console.log(err);
+            })
         )
     });
+
+    promises.push(
+        gcs.downloadFromGCS(background_img_path)
+            .then(function(buf){
+                return sharp(buf);
+            })
+            .catch(function(err){
+                console.log(err);
+            })
+    );
 
     return Promise.all(promises).then(
         (results) => { return results });
