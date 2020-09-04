@@ -33,14 +33,6 @@ async function uploadToGCS(img, file_path){
     });
 }
 
-async function downloadFromGCS(file_path){
-    const file = bucket.file(file_path);
-
-    return await file.download().then(function(data){
-        return data[0]; 
-    });
-}
-
 module.exports = {
     uploadToGCS,
     getPublicUrl
