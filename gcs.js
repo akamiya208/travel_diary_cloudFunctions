@@ -27,6 +27,9 @@ async function uploadToGCS(img, file_path){
     .end(await img.toBuffer())
     .on('error', function(err){
         console.log(err);
+    })
+    .on('finish', function(){
+
     });
 }
 
@@ -40,15 +43,5 @@ async function downloadFromGCS(file_path){
 
 module.exports = {
     uploadToGCS,
-    getPublicUrl,
-    downloadFromGCS
+    getPublicUrl
 };
-
-// const select_image = require('./select_image');
-// (async () => {
-//     let file_path = "development/landscape/photo0000-0222.jpg"
-//     const file = await downloadFromGCS(file_path);
-//     // console.log(file)
-    
-//     // diary_img.toFile('/app/app/test.png')
-// })();

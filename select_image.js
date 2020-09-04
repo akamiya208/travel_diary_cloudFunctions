@@ -32,6 +32,8 @@ async function nlp_processing(text){
 }
 
 async function select_image(text){
+    // TODO: とりあえず画像のPATHを2個返却する
+
     // 自然言語処理に基づいた処理を行う。
     let query = await nlp_processing(text);
     let key = process.env['PIXABAY_API_KEY'];
@@ -54,7 +56,7 @@ async function select_image(text){
             for (let i = 0; i < 2; i++) {
                 let arrayIndex = Math.floor(Math.random() * response.data.hits.length);
                 pixabay_url_list.push(response.data.hits[arrayIndex]["webformatURL"]);
-                pixabay_url_list.splice(arrayIndex, 1);
+                response.data.hits.splice(arrayIndex, 1);
             }
             
             return pixabay_url_list
@@ -68,7 +70,7 @@ async function select_image(text){
                     for (let i = 0; i < 2; i++) {
                         let arrayIndex = Math.floor(Math.random() * response.data.hits.length);
                         pixabay_url_list.push(response.data.hits[arrayIndex]["webformatURL"]);
-                        pixabay_url_list.splice(arrayIndex, 1);
+                        response.data.hits.splice(arrayIndex, 1);
                     }
                     
                     return pixabay_url_list
@@ -79,7 +81,7 @@ async function select_image(text){
         console.log(err);
     });
 
-    url_list.push(process.env['ENV'] +'/diary_template/' + "diary_template.png");
+    url_list.push("./diary_template.png");    
     return url_list
 }
 
