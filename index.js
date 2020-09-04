@@ -5,8 +5,8 @@
  * @param {!express:Response} res HTTP response context.
  */
 const select_image = require('./select_image');
-const image_processing = require('./image_processing');
-const gcs = require('./gcs');
+const { load_img, concat_img, make_text_img } = require('./image_processing');
+const { uploadToGCS, getPublicUrl } = require('./gcs');
 
 
 exports.sendImageApi = (req, res) => {
@@ -23,10 +23,10 @@ exports.sendImageApi = (req, res) => {
     const filename = Date.now() + ".png"
     const file_path = process.env['ENV'] +'/diary/' + filename;
     
-    await gcs.uploadToGCS(diary_img, file_path)
+    await uploadToGCS(diary_img, file_path)
           .then( () => {
             res.status(200).json({
-              "url": gcs.getPublicUrl(file_path)
+              "url": getPublicUrl(file_path)
             });
           })
           .catch( (err) => {
