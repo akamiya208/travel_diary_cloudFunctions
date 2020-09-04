@@ -12,12 +12,16 @@ const gcs = require('./gcs');
 exports.sendImageApi = (req, res) => {
   (async () => {
 
-    let text = req.body.text || '';
+    const text = req.body.text || '';
 
-    let img_paths = await select_image(text); // TODO: select_imageの引数は変更要
-    let append_content_img_lists = await image_processing.load_img(img_paths);
-    let append_text_img_buf_lists =  await image_processing.make_text_img(text);
-    let diary_img = await image_processing.concat_img(append_content_img_lists, append_text_img_buf_lists);    
+    const img_paths = await select_image(text); // TODO: select_imageの引数は変更要
+    const promises = [image_processing.load_img(img_paths), image_processing.make_text_img(text)];
+    const result = await Promise.all(promises).then((results) => { return results });
+    const diary_img = await concat_img(result[0], result[1]);
+
+    // let append_content_img_lists = await image_processing.load_img(img_paths);
+    // let append_text_img_buf_lists =  await image_processing.make_text_img(text);
+    // let diary_img = await image_processing.concat_img(append_content_img_lists, append_text_img_buf_lists);
         
     const filename = Date.now() + ".png"
     const file_path = process.env['ENV'] +'/diary/' + filename;
