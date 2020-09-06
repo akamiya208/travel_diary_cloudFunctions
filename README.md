@@ -14,4 +14,4 @@ travel_diary for cloud functions
 
 ## dialogflowFulfillment
 - SEND_IMAGE_API_URL
-- SEND_IMAGE_INTENT : StartTextIntent.yes.SendImageIntent
+- SEND_IMAGE_INTENT
