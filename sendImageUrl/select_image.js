@@ -10,7 +10,7 @@ async function nlp_processing(text){
 
     return axios({
             method: 'post',
-            url: 'https://jlp.yahooapis.jp/KeyphraseService/V1/extract',
+            url:  process.env['YAHOO_KEYPHRASE_API_URL'],
             data : data
         })
         .then(function (response) {
@@ -32,9 +32,7 @@ async function nlp_processing(text){
 }
 
 async function select_image(text){
-    // TODO: とりあえず画像のPATHを2個返却する
 
-    // 自然言語処理に基づいた処理を行う。
     let query = await nlp_processing(text);
     let key = process.env['PIXABAY_API_KEY'];
 
@@ -46,7 +44,7 @@ async function select_image(text){
         orientation: "horizontal",
     };
 
-    let url_list = await axios.get('https://pixabay.com/api/',{
+    let url_list = await axios.get(process.env['PIXABAY_API_URL'], {
           params: params,
     })
     .then(function (response) {
@@ -64,7 +62,7 @@ async function select_image(text){
             params.q = "";
             params.category = "travel";
 
-            return axios.get('https://pixabay.com/api/',{
+            return axios.get(process.env['PIXABAY_API_URL'], {
                     params: params,
                 }).then(function(response){
                     for (let i = 0; i < 2; i++) {

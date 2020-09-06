@@ -4,7 +4,6 @@ const { registerFont, createCanvas} = require('canvas');
 const sharp = require('sharp');
 const axios = require('axios');
 
-// TODO: 変更可能性有
 registerFont('./GenEiNuGothic-EB.ttf', { family: 'GenEiNuGothic Bold' })
 
 function load_img(img_paths){
@@ -29,16 +28,6 @@ function load_img(img_paths){
     });
 
     promises.push(sharp(background_img_path));    
-
-    // promises.push(
-    //     gcs.downloadFromGCS(background_img_path)
-    //         .then(function(buf){
-    //             return sharp(buf);
-    //         })
-    //         .catch(function(err){
-    //             console.log(err);
-    //         })
-    // );
 
     return Promise.all(promises).then(
         (results) => { return results });
@@ -117,8 +106,6 @@ async function make_text_img(text, font_size=30, line_spacing=3){
     ctx.font = `${font_size}px "GenEiNuGothic Bold"`;
     ctx.fillStyle = "rgb(255, 255, 255)";
     
-    // 縦書きに関する処理を行う
-
     chCountPerColLine = Math.floor(canvas_height / font_size); // 縦に何文字入るか
     chCountPerRowLine = Math.floor(canvas_width / (font_size + line_spacing)); // 横幅に何列入るか
   

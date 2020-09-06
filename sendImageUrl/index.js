@@ -9,19 +9,15 @@ const image_processing = require('./image_processing');
 const gcs = require('./gcs');
 
 
-exports.sendImageApi = (req, res) => {
+exports.sendImageUrl = (req, res) => {
   (async () => {
 
     const text = req.body.text || '';
 
-    const img_paths = await select_image(text); // TODO: select_imageの引数は変更要
+    const img_paths = await select_image(text);
     const promises = [image_processing.load_img(img_paths), image_processing.make_text_img(text)];
     const result = await Promise.all(promises).then((results) => { return results });
     const diary_img = await image_processing.concat_img(result[0], result[1]);
-
-    // let append_content_img_lists = await image_processing.load_img(img_paths);
-    // let append_text_img_buf_lists =  await image_processing.make_text_img(text);
-    // let diary_img = await image_processing.concat_img(append_content_img_lists, append_text_img_buf_lists);
         
     const filename = Date.now() + ".png"
     const file_path = process.env['ENV'] +'/diary/' + filename;
@@ -34,9 +30,6 @@ exports.sendImageApi = (req, res) => {
           })
           .catch( (err) => {
             console.log(err);
-            // res.status(500).json({
-            //   "error": err
-            // });
           })
   })().catch();
 };

@@ -1,6 +1,12 @@
 {
-    "name": "app",
-    "version": "0.0.0",
+    "name": "sendImageUrl",
+    "description": "This is the Functions for editing and storeing the images to GCS",
+    "version": "0.0.1",
+    "license": "MIT License",
+    "author": "akamiya208",
+    "engines": {
+      "node": "10"
+    },
     "dependencies": {
       "@google-cloud/storage": "^5.3.0",
       "axios": "^0.20.0",
