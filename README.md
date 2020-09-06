@@ -1,8 +1,13 @@
 # travel_diary_cloudFunctions
-travel_diary for cloud functions
+- HACKU2020 の成果物のコード
+- 絵日記を生成するLINE BOTを作成する用のコード
+- 2つの Cloud Functions から構成される
+    - sendImageUrl : 画像を合成し，GCSに保存後，GCSのURLを送信する．
+    - dialogflowFulfillment : DialogFlow側のFulfillment
 
-## sendImageUrl
-### ENV
+## Cloud Functions
+### sendImageUrl
+#### ENV
 - ENV
 - PROJECT_ID
 - GOOGLE_CLOUD_PROJECT
@@ -12,6 +17,10 @@ travel_diary for cloud functions
 - PIXABAY_API_KEY
 - PIXABAY_API_URL : https://pixabay.com/api/
 
-## dialogflowFulfillment
+### dialogflowFulfillment
+#### ENV
 - SEND_IMAGE_API_URL
 - SEND_IMAGE_INTENT
+
+## 所感
+- 本当は一つの関数で収まりそうな予感がする．
