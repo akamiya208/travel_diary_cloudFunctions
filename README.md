@@ -5,8 +5,17 @@
     - sendImageUrl : 画像を合成し，GCSに保存後，GCSのURLを送信する．
     - dialogflowFulfillment : DialogFlow側のFulfillment
 
+## Requirement
+- Google Cloud Functions
+    - Node v10
+    - 関数が2つあるので，インスタンスを2つ立ててください．
+- Google Cloud Strage
+- DialogFlow
+    - DialogFlow Fulfillmentを使用
+
 ## Cloud Functions
 ### sendImageUrl
+- インスタンスが最高の2GBでの動作を推奨します．
 #### ENV
 - ENV
 - PROJECT_ID
@@ -18,6 +27,7 @@
 - PIXABAY_API_URL : https://pixabay.com/api/
 
 ### dialogflowFulfillment
+- インスタンスが最低の128MBで動作します．
 #### ENV
 - SEND_IMAGE_API_URL
 - SEND_IMAGE_INTENT
