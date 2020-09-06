@@ -7,6 +7,10 @@
     "engines": {
       "node": "10"
     },
+    "scripts": {
+      "start": "firebase serve --only functions:sendImageUrl",
+      "deploy": "firebase deploy --only functions:sendImageUrl"
+    },
     "dependencies": {
       "@google-cloud/storage": "^5.3.0",
       "axios": "^0.20.0",
