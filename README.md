@@ -6,6 +6,15 @@
     - sendImageUrl : 画像を合成し，GCSに保存後，GCSのURLを送信する．
     - dialogflowFulfillment : DialogFlow側のFulfillment
 
+## Project Organization
+------------
+
+    ├── dialogflowFulfillment <- dialogflowFulfillmentのCloud Functions
+    ├── sendImageUrl          <- sendImageUrlのCloud Functions
+    └── travelDiaryBot.zip    <- DialogFlowのエクスポートしたコード
+
+--------
+
 ## Requirement
 - Google Cloud Functions
     - Node v10
